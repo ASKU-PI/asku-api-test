@@ -1,4 +1,4 @@
-package com.burakkaygusuz.tests
+package pl.asku.tests
 
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
@@ -16,7 +16,6 @@ open class BaseTest {
 
     companion object {
         lateinit var requestSpecification: RequestSpecification
-        const val apiKey: String = "[YOUR_API_KEY]"
     }
 
     @BeforeAll
@@ -26,7 +25,7 @@ open class BaseTest {
         val config = RestAssuredConfig.config().logConfig(logConfig)
 
         requestSpecification = RequestSpecBuilder()
-            .setBaseUri("localhost:4000")
+            .setBaseUri("http://localhost:4000")
             .setContentType(ContentType.JSON)
             .setRelaxedHTTPSValidation()
             .setConfig(config)
