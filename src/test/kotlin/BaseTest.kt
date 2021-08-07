@@ -6,7 +6,16 @@ import io.restassured.config.LogConfig
 import io.restassured.config.RestAssuredConfig
 import io.restassured.filter.log.LogDetail
 import io.restassured.http.ContentType
+import io.restassured.http.Header
+import io.restassured.module.kotlin.extensions.Extract
+import io.restassured.module.kotlin.extensions.Given
+import io.restassured.module.kotlin.extensions.Then
+import io.restassured.module.kotlin.extensions.When
 import io.restassured.specification.RequestSpecification
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import model.auth.Login
+import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
@@ -16,6 +25,9 @@ open class BaseTest {
 
     companion object {
         lateinit var requestSpecification: RequestSpecification
+        lateinit var userAuthorizationHeader: Header
+        lateinit var moderatorAuthorizationHeader: Header
+        lateinit var adminAuthorizationHeader: Header
     }
 
     @BeforeAll
@@ -30,10 +42,29 @@ open class BaseTest {
             .setRelaxedHTTPSValidation()
             .setConfig(config)
             .build()
+
+        userAuthorizationHeader = getAuthorizationHeader("testUser", "testUser")
+        moderatorAuthorizationHeader = getAuthorizationHeader("testModerator", "testModerator")
+        adminAuthorizationHeader = getAuthorizationHeader("testAdmin", "testAdmin")
     }
 
     @AfterAll
     fun tearDown() {
         RestAssured.reset()
+    }
+
+    private fun getAuthorizationHeader(username: String, password: String): Header {
+        val token : String = Given {
+            spec(Companion.requestSpecification)
+            body(Json.encodeToString(Login(username, password)))
+        } When {
+            post("/auth/api/login")
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            path("token")
+        }
+        
+        return Header("Authorization", "Bearer $token")
     }
 }
