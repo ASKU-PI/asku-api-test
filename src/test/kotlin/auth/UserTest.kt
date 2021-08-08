@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 class UserTest : BaseTest() {
 
-    val path: String = "/auth/api/user"
+    private val path: String = "/auth/api/user"
 
     @Test
     fun `fails for not signed in user`() {
@@ -71,6 +71,62 @@ class UserTest : BaseTest() {
             statusCode(HttpStatus.SC_OK)
             body("username", equalTo("testAdmin"))
             body("authorities.authorityName", hasItems("ROLE_USER", "ROLE_MODERATOR", "ROLE_ADMIN"))
+        }
+    }
+
+    @Test
+    fun `fails for not signed in user trying to get a user`() {
+        Given {
+            spec(requestSpecification)
+        } When {
+            get("$path/testUser")
+        } Then {
+            statusCode(HttpStatus.SC_UNAUTHORIZED)
+        }
+    }
+
+    @Test
+    fun `fails for regular user trying to get other user`() {
+        Given {
+            spec(requestSpecification)
+            header(userAuthorizationHeader)
+        } When {
+            get("$path/moderatorUser")
+        } Then {
+            statusCode(HttpStatus.SC_FORBIDDEN)
+        }
+    }
+
+    @Test
+    fun `returns requested user for moderator`() {
+        Given {
+            spec(requestSpecification)
+            header(moderatorAuthorizationHeader)
+        } When {
+            get("$path/testAdmin")
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+            body("username", equalTo("testAdmin"))
+            body("authorities.authorityName", hasItems("ROLE_USER", "ROLE_MODERATOR", "ROLE_ADMIN"))
+        }
+    }
+
+    @Test
+    fun `returns requested user for admin`() {
+        Given {
+            spec(requestSpecification)
+            header(adminAuthorizationHeader)
+        } When {
+            get("$path/testUser")
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+            body(equalTo(Json.encodeToString(
+                User(
+                    "testUser",
+                    arrayOf(
+                        Authority("ROLE_USER")
+                    ))
+            )))
         }
     }
 }

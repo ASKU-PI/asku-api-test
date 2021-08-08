@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class HealthTest : BaseTest() {
 
-    val path: String = "/auth/actuator/health"
+    private val path: String = "/auth/actuator/health"
 
     @Test
     fun `service is healthy`() {
