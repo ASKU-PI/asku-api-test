@@ -93,7 +93,26 @@ class UserTest : BaseTest() {
         } When {
             get("$path/moderatorUser")
         } Then {
-            statusCode(HttpStatus.SC_FORBIDDEN)
+            statusCode(HttpStatus.SC_UNAUTHORIZED)
+        }
+    }
+
+    @Test
+    fun `returns user info for user requesting themselves`() {
+        Given {
+            spec(requestSpecification)
+            header(userAuthorizationHeader)
+        } When {
+            get("$path/testUser")
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+            body(equalTo(Json.encodeToString(
+                User(
+                    "testUser",
+                    arrayOf(
+                        Authority("ROLE_USER")
+                    ))
+            )))
         }
     }
 
