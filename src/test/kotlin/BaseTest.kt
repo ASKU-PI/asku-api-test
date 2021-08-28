@@ -55,7 +55,7 @@ open class BaseTest {
 
     private fun getAuthorizationHeader(username: String, password: String): Header {
         val token : String = Given {
-            spec(Companion.requestSpecification)
+            spec(requestSpecification)
             body(Json.encodeToString(Login(username, password)))
         } When {
             post("/auth/api/login")

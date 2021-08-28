@@ -1,6 +1,5 @@
 package pl.asku.tests.auth
 
-import pl.asku.tests.BaseTest
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
@@ -9,8 +8,10 @@ import kotlinx.serialization.json.Json
 import model.auth.Authority
 import model.auth.User
 import org.apache.http.HttpStatus
-import org.hamcrest.Matchers.*
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasItems
 import org.junit.jupiter.api.Test
+import pl.asku.tests.BaseTest
 
 class UserTest : BaseTest() {
 

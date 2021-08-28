@@ -1,11 +1,11 @@
 package pl.asku.tests.auth
 
-import pl.asku.tests.BaseTest
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Test
+import pl.asku.tests.BaseTest
 
 class HealthTest : BaseTest() {
 
