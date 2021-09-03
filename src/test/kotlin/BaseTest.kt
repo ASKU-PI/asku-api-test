@@ -43,9 +43,9 @@ open class BaseTest {
             .setConfig(config)
             .build()
 
-        userAuthorizationHeader = getAuthorizationHeader("testUser", "testUser")
-        moderatorAuthorizationHeader = getAuthorizationHeader("testModerator", "testModerator")
-        adminAuthorizationHeader = getAuthorizationHeader("testAdmin", "testAdmin")
+        userAuthorizationHeader = getAuthorizationHeader("testUser@gmail.com", "testUser")
+        moderatorAuthorizationHeader = getAuthorizationHeader("testModerator@gmail.com", "testModerator")
+        adminAuthorizationHeader = getAuthorizationHeader("testAdmin@gmail.com", "testAdmin")
     }
 
     @AfterAll
@@ -53,10 +53,10 @@ open class BaseTest {
         RestAssured.reset()
     }
 
-    private fun getAuthorizationHeader(username: String, password: String): Header {
+    private fun getAuthorizationHeader(email: String, password: String): Header {
         val token : String = Given {
             spec(requestSpecification)
-            body(Json.encodeToString(Login(username, password)))
+            body(Json.encodeToString(Login(email, password)))
         } When {
             post("/auth/api/login")
         } Then {

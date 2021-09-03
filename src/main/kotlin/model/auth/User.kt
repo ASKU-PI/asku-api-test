@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    @Required val username: String,
+    @Required val identifier: String,
     @Required val authorities: Array<Authority>
 ) {
     override fun equals(other: Any?): Boolean {
@@ -14,14 +14,14 @@ data class User(
 
         other as User
 
-        if (username != other.username) return false
+        if (identifier != other.identifier) return false
         if (!authorities.contentEquals(other.authorities)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = username.hashCode()
+        var result = identifier.hashCode()
         result = 31 * result + authorities.contentHashCode()
         return result
     }

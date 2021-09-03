@@ -39,7 +39,7 @@ class UserTest : BaseTest() {
             statusCode(HttpStatus.SC_OK)
             body(equalTo(Json.encodeToString(
                 User(
-                    "testUser",
+                    "testUser@gmail.com",
                     arrayOf(
                         Authority("ROLE_USER")
                     ))
@@ -56,7 +56,7 @@ class UserTest : BaseTest() {
             get(path)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body("username", equalTo("testModerator"))
+            body("identifier", equalTo("testModerator@gmail.com"))
             body("authorities.authorityName", hasItems("ROLE_USER", "ROLE_MODERATOR"))
         }
     }
@@ -70,7 +70,7 @@ class UserTest : BaseTest() {
             get(path)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body("username", equalTo("testAdmin"))
+            body("identifier", equalTo("testAdmin@gmail.com"))
             body("authorities.authorityName", hasItems("ROLE_USER", "ROLE_MODERATOR", "ROLE_ADMIN"))
         }
     }
@@ -80,7 +80,7 @@ class UserTest : BaseTest() {
         Given {
             spec(requestSpecification)
         } When {
-            get("$path/testUser")
+            get("$path/testUser@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_UNAUTHORIZED)
         }
@@ -92,7 +92,7 @@ class UserTest : BaseTest() {
             spec(requestSpecification)
             header(userAuthorizationHeader)
         } When {
-            get("$path/moderatorUser")
+            get("$path/moderatorUser@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_UNAUTHORIZED)
         }
@@ -104,12 +104,12 @@ class UserTest : BaseTest() {
             spec(requestSpecification)
             header(userAuthorizationHeader)
         } When {
-            get("$path/testUser")
+            get("$path/testUser@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_OK)
             body(equalTo(Json.encodeToString(
                 User(
-                    "testUser",
+                    "testUser@gmail.com",
                     arrayOf(
                         Authority("ROLE_USER")
                     ))
@@ -123,10 +123,10 @@ class UserTest : BaseTest() {
             spec(requestSpecification)
             header(moderatorAuthorizationHeader)
         } When {
-            get("$path/testAdmin")
+            get("$path/testAdmin@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body("username", equalTo("testAdmin"))
+            body("identifier", equalTo("testAdmin@gmail.com"))
             body("authorities.authorityName", hasItems("ROLE_USER", "ROLE_MODERATOR", "ROLE_ADMIN"))
         }
     }
@@ -137,12 +137,12 @@ class UserTest : BaseTest() {
             spec(requestSpecification)
             header(adminAuthorizationHeader)
         } When {
-            get("$path/testUser")
+            get("$path/testUser@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_OK)
             body(equalTo(Json.encodeToString(
                 User(
-                    "testUser",
+                    "testUser@gmail.com",
                     arrayOf(
                         Authority("ROLE_USER")
                     ))
