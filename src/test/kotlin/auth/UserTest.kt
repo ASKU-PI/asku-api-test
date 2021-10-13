@@ -37,13 +37,18 @@ class UserTest : BaseTest() {
             get(path)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body(equalTo(Json.encodeToString(
-                User(
-                    "testUser@gmail.com",
-                    arrayOf(
-                        Authority("ROLE_USER")
-                    ))
-            )))
+            body(
+                equalTo(
+                    Json.encodeToString(
+                        User(
+                            "testUser@gmail.com",
+                            arrayOf(
+                                Authority("ROLE_USER")
+                            )
+                        )
+                    )
+                )
+            )
         }
     }
 
@@ -107,13 +112,18 @@ class UserTest : BaseTest() {
             get("$path/testUser@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body(equalTo(Json.encodeToString(
-                User(
-                    "testUser@gmail.com",
-                    arrayOf(
-                        Authority("ROLE_USER")
-                    ))
-            )))
+            body(
+                equalTo(
+                    Json.encodeToString(
+                        User(
+                            "testUser@gmail.com",
+                            arrayOf(
+                                Authority("ROLE_USER")
+                            )
+                        )
+                    )
+                )
+            )
         }
     }
 
@@ -140,13 +150,18 @@ class UserTest : BaseTest() {
             get("$path/testUser@gmail.com")
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body(equalTo(Json.encodeToString(
-                User(
-                    "testUser@gmail.com",
-                    arrayOf(
-                        Authority("ROLE_USER")
-                    ))
-            )))
+            body(
+                equalTo(
+                    Json.encodeToString(
+                        User(
+                            "testUser@gmail.com",
+                            arrayOf(
+                                Authority("ROLE_USER")
+                            )
+                        )
+                    )
+                )
+            )
         }
     }
 }

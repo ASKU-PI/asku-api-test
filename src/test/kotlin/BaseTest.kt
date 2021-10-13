@@ -54,7 +54,7 @@ open class BaseTest {
     }
 
     private fun getAuthorizationHeader(email: String, password: String): Header {
-        val token : String = Given {
+        val token: String = Given {
             spec(requestSpecification)
             body(Json.encodeToString(Login(email, password)))
         } When {
@@ -64,7 +64,7 @@ open class BaseTest {
         } Extract {
             path("token")
         }
-        
+
         return Header("Authorization", "Bearer $token")
     }
 }
